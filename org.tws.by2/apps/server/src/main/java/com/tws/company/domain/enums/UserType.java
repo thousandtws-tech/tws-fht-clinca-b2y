@@ -1,10 +1,21 @@
 package com.tws.company.domain.enums;
 
-public enum UserType {
-    doctor,
-    hospital,
-    admin,
-    receptionist,
-    triage_nurse,
-    caravan_admin
+public enum UserType implements DatabaseEnum {
+    DOCTOR("doctor"),
+    HOSPITAL("hospital"),
+    ADMIN("admin"),
+    RECEPTIONIST("receptionist"),
+    TRIAGE_NURSE("triage_nurse"),
+    CARAVAN_ADMIN("caravan_admin");
+
+    private final String value;
+
+    UserType(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
 }
