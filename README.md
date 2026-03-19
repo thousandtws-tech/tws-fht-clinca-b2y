@@ -224,3 +224,14 @@ Algumas regras centrais da plataforma:
 
 ## Licensa 
 Apache License
+
+
+
+
+# Desenvolvido por:
+<img 
+    alt="TWS"
+    title="Java" 
+    width="150px" 
+    src="https://res.cloudinary.com/ddhvxva1e/image/upload/v1773886260/WhatsApp_Image_2026-03-17_at_23.19.08-Photoroom_1_pdrnid.png" 
+/>
