@@ -1,25 +1,21 @@
 package com.tws.company.domain;
 
 import java.math.BigDecimal;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import java.util.UUID;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-public class Consultations {
-
-    @Id
-    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
-    @Column("id")
-    private String id;
+@Table("consultation")
+public class Consultation extends AbstractAuditingUuidEntity {
 
     @Column("appointment_id")
-    private String appointmentId;
+    private UUID appointmentId;
 
     @Column("patient_id")
-    private String patientId;
+    private UUID patientId;
 
-    @Column("doctor_id")
-    private String doctorId;
+    @Column("doctor_profile_id")
+    private UUID doctorProfileId;
 
     @Column("telemedicine_link")
     private String telemedicineLink;
@@ -30,36 +26,28 @@ public class Consultations {
     @Column("total_material_cost")
     private BigDecimal totalMaterialCost;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAppointmentId() {
+    public UUID getAppointmentId() {
         return appointmentId;
     }
 
-    public void setAppointmentId(String appointmentId) {
+    public void setAppointmentId(UUID appointmentId) {
         this.appointmentId = appointmentId;
     }
 
-    public String getPatientId() {
+    public UUID getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(String patientId) {
+    public void setPatientId(UUID patientId) {
         this.patientId = patientId;
     }
 
-    public String getDoctorId() {
-        return doctorId;
+    public UUID getDoctorProfileId() {
+        return doctorProfileId;
     }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorProfileId(UUID doctorProfileId) {
+        this.doctorProfileId = doctorProfileId;
     }
 
     public String getTelemedicineLink() {

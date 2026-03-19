@@ -1,16 +1,11 @@
 package com.tws.company.domain;
 
 import java.math.BigDecimal;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-public class Products {
-
-    @Id
-    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
-    @Column("id")
-    private String id;
+@Table("product")
+public class Product extends AbstractAuditingUuidEntity {
 
     @Column("name")
     private String name;
@@ -20,14 +15,6 @@ public class Products {
 
     @Column("status")
     private String status;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

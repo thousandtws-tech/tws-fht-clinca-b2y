@@ -1,21 +1,14 @@
 package com.tws.company.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import java.util.UUID;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-public class ClinicalDocuments {
-
-    @Id
-    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
-    @Column("id")
-    private String id;
+@Table("prescription")
+public class Prescription extends AbstractAuditingUuidEntity {
 
     @Column("consultation_id")
-    private String consultationId;
-
-    @Column("document_type")
-    private String type;
+    private UUID consultationId;
 
     @Column("patient_name")
     private String patientName;
@@ -26,34 +19,15 @@ public class ClinicalDocuments {
     @Column("doctor_crm")
     private String doctorCrm;
 
-    @Column("details")
-    private String details;
-
     @Column("pdf_path")
     private String pdfPath;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getConsultationId() {
+    public UUID getConsultationId() {
         return consultationId;
     }
 
-    public void setConsultationId(String consultationId) {
+    public void setConsultationId(UUID consultationId) {
         this.consultationId = consultationId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getPatientName() {
@@ -78,14 +52,6 @@ public class ClinicalDocuments {
 
     public void setDoctorCrm(String doctorCrm) {
         this.doctorCrm = doctorCrm;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public String getPdfPath() {
