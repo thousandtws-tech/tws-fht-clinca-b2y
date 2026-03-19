@@ -202,6 +202,9 @@ public class SecurityConfiguration {
                             if (authority instanceof OidcUserAuthority) {
                                 OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
                                 mappedAuthorities.addAll(
+                                    SecurityUtils.extractAuthorityFromClaims(oidcUserAuthority.getIdToken().getClaims())
+                                );
+                                mappedAuthorities.addAll(
                                     SecurityUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims())
                                 );
                             }

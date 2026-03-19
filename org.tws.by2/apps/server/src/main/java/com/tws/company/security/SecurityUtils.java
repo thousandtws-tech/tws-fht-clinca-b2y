@@ -108,19 +108,26 @@ public final class SecurityUtils {
         return mapRolesToGrantedAuthorities(getRolesFromClaims(claims));
     }
 
-    @SuppressWarnings("unchecked")
-    private static Collection<String> getRolesFromClaims(Map<String, Object> claims) {
-        return (Collection<String>) claims.getOrDefault(
-            "groups",
-            claims.getOrDefault("roles", claims.getOrDefault(CLAIMS_NAMESPACE + "roles", new ArrayList<>()))
-        );
-    }
-
     private static List<GrantedAuthority> mapRolesToGrantedAuthorities(Collection<String> roles) {
         return roles
             .stream()
             .filter(role -> role.startsWith("ROLE_"))
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Collection<String> getRolesFromClaims(Map<String, Object> claims) {
+        Object realmAccessObj = claims.get("realm_access");
+        if (realmAccessObj instanceof Map<?, ?> realmAccessMap) {
+            Object realmRolesObj = realmAccessMap.get("roles");
+            if (realmRolesObj instanceof Collection<?> realmRoles) {
+                return realmRoles.stream().map(String::valueOf).collect(Collectors.toList());
+            }
+        }
+        return (Collection<String>) claims.getOrDefault(
+            "groups",
+            claims.getOrDefault("roles", claims.getOrDefault(CLAIMS_NAMESPACE + "roles", new ArrayList<>()))
+        );
     }
 }
