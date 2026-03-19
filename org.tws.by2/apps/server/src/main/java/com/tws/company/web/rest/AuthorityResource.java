@@ -3,6 +3,7 @@ package com.tws.company.web.rest;
 import com.tws.company.domain.Authority;
 import com.tws.company.repository.AuthorityRepository;
 import com.tws.company.web.rest.errors.BadRequestAlertException;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,6 +27,7 @@ import tech.jhipster.web.util.reactive.ResponseUtil;
 @RestController
 @RequestMapping("/api/authorities")
 @Transactional
+@Hidden
 public class AuthorityResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthorityResource.class);

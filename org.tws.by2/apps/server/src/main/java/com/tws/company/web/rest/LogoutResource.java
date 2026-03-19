@@ -1,6 +1,7 @@
 package com.tws.company.web.rest;
 
 import java.util.Map;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
  * REST controller for managing global OIDC logout.
  */
 @RestController
+@Hidden
 public class LogoutResource {
 
     private final ReactiveClientRegistrationRepository registrationRepository;

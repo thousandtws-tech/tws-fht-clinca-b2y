@@ -1,6 +1,7 @@
 package com.tws.company.web.rest;
 
 import com.tws.company.broker.KafkaConsumer;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -11,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/server-kafka")
+@Hidden
 public class ServerKafkaResource {
 
     private static final String PRODUCER_BINDING_NAME = "binding-out-0";

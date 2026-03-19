@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -59,6 +60,7 @@ import tech.jhipster.web.filter.reactive.CookieCsrfFilter;
 public class SecurityConfiguration {
 
     private final JHipsterProperties jHipsterProperties;
+    private final Environment environment;
 
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
@@ -73,13 +75,19 @@ public class SecurityConfiguration {
         .recordStats()
         .build();
 
-    public SecurityConfiguration(ReactiveClientRegistrationRepository clientRegistrationRepository, JHipsterProperties jHipsterProperties) {
+    public SecurityConfiguration(
+        ReactiveClientRegistrationRepository clientRegistrationRepository,
+        JHipsterProperties jHipsterProperties,
+        Environment environment
+    ) {
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.jHipsterProperties = jHipsterProperties;
+        this.environment = environment;
     }
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        boolean isDevProfile = isDevProfile();
         http
             .securityMatcher(
                 new NegatedServerWebExchangeMatcher(
@@ -108,25 +116,35 @@ public class SecurityConfiguration {
                         )
                     )
             )
-            .authorizeExchange(authz ->
+            .authorizeExchange(authz -> {
                 // prettier-ignore
                 authz
                     .pathMatchers("/api/authenticate").permitAll()
                     .pathMatchers("/api/auth-info").permitAll()
                     .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
                     .pathMatchers("/api/**").authenticated()
-                    .pathMatchers("/services/**").authenticated()
-                    .pathMatchers("/v3/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                    .pathMatchers("/services/**").authenticated();
+                if (isDevProfile) {
+                    authz.pathMatchers("/v3/api-docs/**").permitAll();
+                } else {
+                    authz.pathMatchers("/v3/api-docs/**").hasAuthority(AuthoritiesConstants.ADMIN);
+                }
+                // prettier-ignore
+                authz
                     .pathMatchers("/management/health").permitAll()
                     .pathMatchers("/management/health/**").permitAll()
                     .pathMatchers("/management/info").permitAll()
                     .pathMatchers("/management/prometheus").permitAll()
-                    .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            )
+                    .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+            })
             .oauth2Login(oauth2 -> oauth2.authorizationRequestResolver(authorizationRequestResolver(this.clientRegistrationRepository)))
             .oauth2Client(withDefaults())
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
+    }
+
+    private boolean isDevProfile() {
+        return Arrays.asList(environment.getActiveProfiles()).contains("dev");
     }
 
     private ServerOAuth2AuthorizationRequestResolver authorizationRequestResolver(

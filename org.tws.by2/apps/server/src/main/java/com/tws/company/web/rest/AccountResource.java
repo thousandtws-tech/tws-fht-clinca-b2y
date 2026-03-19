@@ -2,6 +2,7 @@ package com.tws.company.web.rest;
 
 import com.tws.company.service.UserService;
 import com.tws.company.service.dto.AdminUserDTO;
+import io.swagger.v3.oas.annotations.Hidden;
 import java.io.Serial;
 import java.security.Principal;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @RequestMapping("/api")
+@Hidden
 public class AccountResource {
 
     private static class AccountResourceException extends RuntimeException {

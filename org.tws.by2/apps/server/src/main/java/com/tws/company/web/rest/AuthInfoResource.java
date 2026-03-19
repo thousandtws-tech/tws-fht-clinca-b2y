@@ -1,6 +1,7 @@
 package com.tws.company.web.rest;
 
 import org.springframework.beans.factory.annotation.Value;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
+@Hidden
 public class AuthInfoResource {
 
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri:}")

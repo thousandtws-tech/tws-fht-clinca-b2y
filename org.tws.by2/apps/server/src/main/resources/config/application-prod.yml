@@ -1,18 +1,3 @@
-# ===================================================================
-# Spring Boot configuration for the "prod" profile.
-#
-# This configuration overrides the application.yml file.
-#
-# More information on profiles: https://www.jhipster.tech/profiles/
-# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
-# ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# https://docs.spring.io/spring-boot/appendix/application-properties/index.html
-# ===================================================================
-
 logging:
   level:
     ROOT: INFO
@@ -36,9 +21,11 @@ spring:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
-    url: jdbc:postgresql://localhost:5432/server
+    url: jdbc:postgresql://ep-curly-wave-an992b17-pooler.c-6.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_Lt3lbOv7oaKJ&sslmode=require&channelBinding=require
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/server
+    url: r2dbc:postgresql://ep-curly-wave-an992b17-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require&channelBinding=require
+    username: neondb_owner
+    password: npg_Lt3lbOv7oaKJ
   thymeleaf:
     cache: true
 

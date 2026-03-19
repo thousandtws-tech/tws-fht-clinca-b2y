@@ -3,6 +3,7 @@ package com.tws.company.web.rest;
 import com.tws.company.repository.search.UserSearchRepository;
 import com.tws.company.service.UserService;
 import com.tws.company.service.dto.UserDTO;
+import io.swagger.v3.oas.annotations.Hidden;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import tech.jhipster.web.util.PaginationUtil;
 
 @RestController
 @RequestMapping("/api")
+@Hidden
 public class PublicUserResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(PublicUserResource.class);

@@ -154,8 +154,8 @@ jhipster:
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
-    title: Server API
-    description: Server API documentation
+    title: TWS FHT Clinica API SERVER PROJETO DO GRUPO B2Y
+    description: Documentação da API do projeto TWS FHT Clinica (Grupo B2Y)
     version: 0.0.1
     terms-of-service-url:
     contact-name:
