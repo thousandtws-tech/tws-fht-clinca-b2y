@@ -1,4 +1,4 @@
-# FHT Clínica
+# Grupo B2Y FHT Clínica
 
 A **FHT Clínica** é uma plataforma de gestão e operação para instituições de saúde, conectando hospitais, clínicas e profissionais da saúde em um ecossistema digital completo.
 
