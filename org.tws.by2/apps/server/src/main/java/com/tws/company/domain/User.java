@@ -21,7 +21,7 @@ import org.springframework.data.relational.core.mapping.Table;
 /**
  * A user.
  */
-@Table("jhi_user")
+@Table("users")
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "user")
 public class User extends AbstractAuditingEntity<String> implements Serializable, Persistable<String> {
 
