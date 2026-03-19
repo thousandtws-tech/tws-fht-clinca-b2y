@@ -118,9 +118,9 @@ O sistema possui uma camada administrativa responsável por acompanhar e validar
 - termos de aceite  
 - contratos gerados  
 - aprovações finais da operação  
-  ```
+ 
 Após a validação do back-office, o profissional passa a operar vinculado à estrutura institucional do hospital contratante.  
-  
+   ```
 ### 5. Vinculação operacional ao hospital  
   ```
 Depois da aprovação:  
