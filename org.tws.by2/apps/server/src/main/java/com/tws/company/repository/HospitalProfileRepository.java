@@ -9,4 +9,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface HospitalProfileRepository extends R2dbcRepository<HospitalProfile, UUID> {
     Mono<HospitalProfile> findOneByUserAccountId(UUID userAccountId);
+
+    Mono<HospitalProfile> findOneByCnpj(String cnpj);
 }

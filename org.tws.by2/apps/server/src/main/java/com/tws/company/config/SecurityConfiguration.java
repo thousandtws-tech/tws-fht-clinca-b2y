@@ -43,10 +43,12 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.csrf.CsrfWebFilter;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
 import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
+import org.springframework.security.web.server.util.matcher.AndServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -98,6 +100,12 @@ public class SecurityConfiguration {
             .csrf(csrf ->
                 csrf
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+                    .requireCsrfProtectionMatcher(
+                        new AndServerWebExchangeMatcher(
+                            CsrfWebFilter.DEFAULT_CSRF_MATCHER,
+                            new NegatedServerWebExchangeMatcher(pathMatchers("/api/auth/**"))
+                        )
+                    )
                     // See https://stackoverflow.com/q/74447118/65681
                     .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler())
             )
@@ -120,6 +128,7 @@ public class SecurityConfiguration {
                 // prettier-ignore
                 authz
                     .pathMatchers("/api/authenticate").permitAll()
+                    .pathMatchers("/api/auth/**").permitAll()
                     .pathMatchers("/api/auth-info").permitAll()
                     .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
                     .pathMatchers("/api/**").authenticated()
