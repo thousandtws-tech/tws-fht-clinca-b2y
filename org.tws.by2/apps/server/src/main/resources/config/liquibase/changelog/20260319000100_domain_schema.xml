@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260319000100-1" author="codex">
+        <createTable tableName="user_account">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_account_user"/>
+            </column>
+            <column name="keycloak_user_id" type="varchar(100)"/>
+            <column name="email" type="varchar(191)"/>
+            <column name="display_name" type="varchar(100)"/>
+            <column name="display_name_lowercase" type="varchar(100)"/>
+            <column name="user_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="document_verification_status" type="varchar(50)"/>
+            <column name="activated" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_account"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_account_jhi_user"
+                                 referencedTableName="jhi_user"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="hospital_profile">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_account_id" type="${uuidType}">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_hospital_profile_user_account"/>
+            </column>
+            <column name="trade_name" type="varchar(191)"/>
+            <column name="legal_name" type="varchar(191)"/>
+            <column name="cnpj" type="varchar(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_hospital_profile_cnpj"/>
+            </column>
+            <column name="state_registration" type="varchar(50)"/>
+            <column name="phone" type="varchar(30)"/>
+            <column name="address" type="${clobType}"/>
+            <column name="legal_representative_name" type="varchar(191)"/>
+            <column name="legal_representative_cpf" type="varchar(20)"/>
+            <column name="legal_representative_email" type="varchar(191)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="hospital_profile"
+                                 baseColumnNames="user_account_id"
+                                 constraintName="fk_hospital_profile_user_account"
+                                 referencedTableName="user_account"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="doctor_profile">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_account_id" type="${uuidType}">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_doctor_profile_user_account"/>
+            </column>
+            <column name="professional_crm" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="crm_state" type="varchar(10)"/>
+            <column name="desired_hourly_rate" type="numeric(21,2)"/>
+            <column name="approval_status" type="varchar(50)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="doctor_profile"
+                                 baseColumnNames="user_account_id"
+                                 constraintName="fk_doctor_profile_user_account"
+                                 referencedTableName="user_account"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="doctor_profile_specialty">
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="doctor_profile_specialty" columnNames="doctor_profile_id, specialty"/>
+        <addForeignKeyConstraint baseTableName="doctor_profile_specialty"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_doctor_profile_specialty_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="health_unit_doctor_link">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="hospital_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="link_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addUniqueConstraint tableName="health_unit_doctor_link"
+                             columnNames="hospital_profile_id, doctor_profile_id"
+                             constraintName="ux_health_unit_doctor_link_pair"/>
+        <addForeignKeyConstraint baseTableName="health_unit_doctor_link"
+                                 baseColumnNames="hospital_profile_id"
+                                 constraintName="fk_health_unit_doctor_link_hospital"
+                                 referencedTableName="hospital_profile"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="health_unit_doctor_link"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_health_unit_doctor_link_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="invitation">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="hospital_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(191)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="varchar(191)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_invitation_token"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="timestamp"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="invitation"
+                                 baseColumnNames="hospital_profile_id"
+                                 constraintName="fk_invitation_hospital_profile"
+                                 referencedTableName="hospital_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="patient">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cpf" type="varchar(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_patient_cpf"/>
+            </column>
+            <column name="name" type="varchar(191)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_date" type="date"/>
+            <column name="phone" type="varchar(30)"/>
+            <column name="email" type="varchar(191)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="shift_requirement">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="hospital_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hospital_name" type="varchar(191)"/>
+            <column name="start_time" type="${timeType}"/>
+            <column name="end_time" type="${timeType}"/>
+            <column name="is_overnight" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_type" type="varchar(100)"/>
+            <column name="offered_rate" type="numeric(21,2)"/>
+            <column name="number_of_vacancies" type="int"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="notes" type="${clobType}"/>
+            <column name="state" type="varchar(10)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="shift_requirement"
+                                 baseColumnNames="hospital_profile_id"
+                                 constraintName="fk_shift_requirement_hospital"
+                                 referencedTableName="hospital_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="shift_requirement_date">
+            <column name="shift_requirement_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shift_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="shift_requirement_date" columnNames="shift_requirement_id, shift_date"/>
+        <addForeignKeyConstraint baseTableName="shift_requirement_date"
+                                 baseColumnNames="shift_requirement_id"
+                                 constraintName="fk_shift_requirement_date_requirement"
+                                 referencedTableName="shift_requirement"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="shift_requirement_specialty">
+            <column name="shift_requirement_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="shift_requirement_specialty" columnNames="shift_requirement_id, specialty"/>
+        <addForeignKeyConstraint baseTableName="shift_requirement_specialty"
+                                 baseColumnNames="shift_requirement_id"
+                                 constraintName="fk_shift_requirement_specialty_requirement"
+                                 referencedTableName="shift_requirement"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="shift_requirement_city">
+            <column name="shift_requirement_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="shift_requirement_city" columnNames="shift_requirement_id, city"/>
+        <addForeignKeyConstraint baseTableName="shift_requirement_city"
+                                 baseColumnNames="shift_requirement_id"
+                                 constraintName="fk_shift_requirement_city_requirement"
+                                 referencedTableName="shift_requirement"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="doctor_time_slot">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_name" type="varchar(191)"/>
+            <column name="slot_date" type="date"/>
+            <column name="start_time" type="${timeType}"/>
+            <column name="end_time" type="${timeType}"/>
+            <column name="is_overnight" type="boolean" valueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_type" type="varchar(100)"/>
+            <column name="desired_hourly_rate" type="numeric(21,2)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="notes" type="${clobType}"/>
+            <column name="state" type="varchar(10)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="doctor_time_slot"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_doctor_time_slot_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="doctor_time_slot_specialty">
+            <column name="doctor_time_slot_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="doctor_time_slot_specialty" columnNames="doctor_time_slot_id, specialty"/>
+        <addForeignKeyConstraint baseTableName="doctor_time_slot_specialty"
+                                 baseColumnNames="doctor_time_slot_id"
+                                 constraintName="fk_doctor_time_slot_specialty_slot"
+                                 referencedTableName="doctor_time_slot"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="doctor_time_slot_city">
+            <column name="doctor_time_slot_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="doctor_time_slot_city" columnNames="doctor_time_slot_id, city"/>
+        <addForeignKeyConstraint baseTableName="doctor_time_slot_city"
+                                 baseColumnNames="doctor_time_slot_id"
+                                 constraintName="fk_doctor_time_slot_city_slot"
+                                 referencedTableName="doctor_time_slot"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="potential_match">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="shift_requirement_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_time_slot_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hospital_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="matched_date" type="date"/>
+            <column name="match_score" type="int"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="offered_rate_by_hospital" type="numeric(21,2)"/>
+            <column name="doctor_desired_rate" type="numeric(21,2)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="potential_match"
+                                 baseColumnNames="shift_requirement_id"
+                                 constraintName="fk_potential_match_requirement"
+                                 referencedTableName="shift_requirement"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="potential_match"
+                                 baseColumnNames="doctor_time_slot_id"
+                                 constraintName="fk_potential_match_slot"
+                                 referencedTableName="doctor_time_slot"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="potential_match"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_potential_match_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="potential_match"
+                                 baseColumnNames="hospital_profile_id"
+                                 constraintName="fk_potential_match_hospital"
+                                 referencedTableName="hospital_profile"
+                                 referencedColumnNames="id"/>
+        <addUniqueConstraint tableName="potential_match"
+                             columnNames="shift_requirement_id, doctor_time_slot_id, matched_date"
+                             constraintName="ux_potential_match_unique"/>
+
+        <createTable tableName="contract">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="shift_requirement_id" type="${uuidType}"/>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hospital_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_name" type="varchar(191)"/>
+            <column name="hospital_name" type="varchar(191)"/>
+            <column name="start_time" type="${timeType}"/>
+            <column name="end_time" type="${timeType}"/>
+            <column name="doctor_rate" type="numeric(21,2)"/>
+            <column name="service_type" type="varchar(100)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="contract_pdf_path" type="varchar(512)"/>
+            <column name="telemedicine_link" type="varchar(512)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="shift_requirement_id"
+                                 constraintName="fk_contract_requirement"
+                                 referencedTableName="shift_requirement"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_contract_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="contract"
+                                 baseColumnNames="hospital_profile_id"
+                                 constraintName="fk_contract_hospital"
+                                 referencedTableName="hospital_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="contract_specialty">
+            <column name="contract_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialty" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="contract_specialty" columnNames="contract_id, specialty"/>
+        <addForeignKeyConstraint baseTableName="contract_specialty"
+                                 baseColumnNames="contract_id"
+                                 constraintName="fk_contract_specialty_contract"
+                                 referencedTableName="contract"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="contract_shift_date">
+            <column name="contract_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shift_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="contract_shift_date" columnNames="contract_id, shift_date"/>
+        <addForeignKeyConstraint baseTableName="contract_shift_date"
+                                 baseColumnNames="contract_id"
+                                 constraintName="fk_contract_shift_date_contract"
+                                 referencedTableName="contract"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="appointment">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="patient_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by_user_account_id" type="${uuidType}"/>
+            <column name="patient_name" type="varchar(191)"/>
+            <column name="doctor_name" type="varchar(191)"/>
+            <column name="specialty" type="varchar(100)"/>
+            <column name="appointment_type" type="varchar(50)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="appointment_date" type="timestamp"/>
+            <column name="telemedicine_room_url" type="varchar(512)"/>
+            <column name="ai_analysis_report" type="${clobType}"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="appointment"
+                                 baseColumnNames="patient_id"
+                                 constraintName="fk_appointment_patient"
+                                 referencedTableName="patient"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="appointment"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_appointment_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="appointment"
+                                 baseColumnNames="created_by_user_account_id"
+                                 constraintName="fk_appointment_created_by_user_account"
+                                 referencedTableName="user_account"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="consultation">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="appointment_id" type="${uuidType}">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_consultation_appointment"/>
+            </column>
+            <column name="patient_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="telemedicine_link" type="varchar(512)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="total_material_cost" type="numeric(21,2)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="consultation"
+                                 baseColumnNames="appointment_id"
+                                 constraintName="fk_consultation_appointment"
+                                 referencedTableName="appointment"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="consultation"
+                                 baseColumnNames="patient_id"
+                                 constraintName="fk_consultation_patient"
+                                 referencedTableName="patient"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="consultation"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_consultation_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="prescription">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="consultation_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_name" type="varchar(191)"/>
+            <column name="doctor_name" type="varchar(191)"/>
+            <column name="doctor_crm" type="varchar(50)"/>
+            <column name="pdf_path" type="varchar(512)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="prescription"
+                                 baseColumnNames="consultation_id"
+                                 constraintName="fk_prescription_consultation"
+                                 referencedTableName="consultation"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="prescription_medication">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="prescription_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="line_order" type="int"/>
+            <column name="name" type="varchar(191)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dosage" type="varchar(191)"/>
+            <column name="instructions" type="${clobType}"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="prescription_medication"
+                                 baseColumnNames="prescription_id"
+                                 constraintName="fk_prescription_medication_prescription"
+                                 referencedTableName="prescription"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="clinical_document">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="consultation_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="document_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_name" type="varchar(191)"/>
+            <column name="doctor_name" type="varchar(191)"/>
+            <column name="doctor_crm" type="varchar(50)"/>
+            <column name="days_off" type="int"/>
+            <column name="cid" type="varchar(50)"/>
+            <column name="consultation_period" type="varchar(191)"/>
+            <column name="pdf_path" type="varchar(512)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="clinical_document"
+                                 baseColumnNames="consultation_id"
+                                 constraintName="fk_clinical_document_consultation"
+                                 referencedTableName="consultation"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="product">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(191)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_per_unit" type="numeric(21,2)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="billing_item">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="consultation_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recorded_by_user_account_id" type="${uuidType}"/>
+            <column name="product_name" type="varchar(191)"/>
+            <column name="quantity_used" type="int"/>
+            <column name="unit_cost_at_time" type="numeric(21,2)"/>
+            <column name="total_cost" type="numeric(21,2)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="billing_item"
+                                 baseColumnNames="consultation_id"
+                                 constraintName="fk_billing_item_consultation"
+                                 referencedTableName="consultation"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="billing_item"
+                                 baseColumnNames="product_id"
+                                 constraintName="fk_billing_item_product"
+                                 referencedTableName="product"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="billing_item"
+                                 baseColumnNames="recorded_by_user_account_id"
+                                 constraintName="fk_billing_item_recorded_by_user_account"
+                                 referencedTableName="user_account"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="time_record">
+            <column name="id" type="${uuidType}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="contract_id" type="${uuidType}">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_time_record_contract"/>
+            </column>
+            <column name="doctor_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hospital_profile_id" type="${uuidType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="check_in_time" type="timestamp"/>
+            <column name="check_in_latitude" type="numeric(10,7)"/>
+            <column name="check_in_longitude" type="numeric(10,7)"/>
+            <column name="check_in_photo_path" type="varchar(512)"/>
+            <column name="check_out_time" type="timestamp"/>
+            <column name="check_out_latitude" type="numeric(10,7)"/>
+            <column name="check_out_longitude" type="numeric(10,7)"/>
+            <column name="check_out_photo_path" type="varchar(512)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="time_record"
+                                 baseColumnNames="contract_id"
+                                 constraintName="fk_time_record_contract"
+                                 referencedTableName="contract"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="time_record"
+                                 baseColumnNames="doctor_profile_id"
+                                 constraintName="fk_time_record_doctor"
+                                 referencedTableName="doctor_profile"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="time_record"
+                                 baseColumnNames="hospital_profile_id"
+                                 constraintName="fk_time_record_hospital"
+                                 referencedTableName="hospital_profile"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 /**
  * A Authority.
  */
-@Table("jhi_authority")
+@Table("authority")
 @JsonIgnoreProperties(value = { "new", "id" })
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Authority implements Serializable, Persistable<String> {
