@@ -9,10 +9,12 @@ function App() {
 
   return (
     <>
-      <Header/>
-      <Home/>
-      <About/>
-      <Portals/>
+      <main className="min-h-screen flex flex-col">
+        <Header/>
+        <Home/>
+        <About/>
+        <Portals/>
+      </main>
       <Footer/>
     </>
   )
