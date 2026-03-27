@@ -1,23 +1,26 @@
-import { Header } from "./components/header/Header"
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./components/home/Home";
+import { Sobre } from "./components/home/components/footer/Sobre";
+import { Politic } from "./components/home/components/footer/Politic";
+import { Terms } from "./components/home/components/footer/Terms";
+import { Contact } from "./components/home/components/footer/Contact";
+import 'antd/dist/reset.css';
+
 import "./App.css"
-import { Home } from "./components/sections/Home"
-import { About } from "./components/sections/About"
-import { Portals } from "./components/sections/Portals"
-import { Footer } from "./components/footer/Footer"
 
-function App() {
 
+export default function App() {
   return (
     <>
-      <main className="min-h-screen flex flex-col">
-        <Header/>
-        <Home/>
-        <About/>
-        <Portals/>
+      <main>
+        <Routes>
+          <Route path="" element={<Home />} />
+          <Route path="/sobre" element={<Sobre />} />
+          <Route path="/politica" element={<Politic />} />
+          <Route path="/termos" element={<Terms />} />
+          <Route path="/contato" element={<Contact/>} />
+        </Routes>
       </main>
-      <Footer/>
     </>
-  )
+  );
 }
-
-export default App
