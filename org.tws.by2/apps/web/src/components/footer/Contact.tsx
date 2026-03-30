@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 export function Contact() {
     return(
@@ -5,8 +6,9 @@ export function Contact() {
         <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-white transition-colors duration-300">
             <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
                 <div className="sticky top-0 w-full z-9 flex items-center justify-between shadow p-6">
-                    <img className="logo area w-30" src="/svgs/logo-fht.svg" alt="" />
-
+                    <a href="/">
+                        <img className="logo area w-30" src="/svgs/logo-fht.svg" alt="" />
+                    </a>
                     <ul className="flex items-center gap-5">
                         <li className="nav-item hover:cursor-pointer">Registre-se</li>
                         <li className="nav-item px-5 py-1 rounded-[7px] bg-blueFHT text-white shadow-2xl hover:cursor-pointer">Entrar</li>
@@ -64,7 +66,7 @@ export function Contact() {
                     </div>
                 </div>
                 <div className="text-center mt-16">
-                    <button className="hover:cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"><a href="/">Voltar Para Pagina Inicial</a></button>
+                    <Link className="hover:cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl" to="/">Voltar para a Pagina Inicial</Link>
                 </div>
             </div>
            <footer className="text-sm bg-blue-700 text-white text-center py-6">© 2025 FHT Soluções Hospitalares. Todos os direitos reservados.</footer>

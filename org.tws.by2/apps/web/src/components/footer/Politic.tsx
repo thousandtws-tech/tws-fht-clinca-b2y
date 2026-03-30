@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 export function Politic() {
     return(
         <div className="min-h-screen flex flex-col bg-linear-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-white">
@@ -30,7 +32,7 @@ export function Politic() {
                     </div>
                 </section>
                 <div>
-                    <button className="hover:cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"><a href="/">Voltar Para Pagina Inicial</a></button>
+                    <Link className="hover:cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl" to="/">Voltar para a Pagina Inicial</Link>
                 </div>
             </main>
             <footer className="bg-blue-700 text-white text-sm text-center py-6">© 2025 FHT Soluções Hospitalares. Todos os direitos reservados.</footer>

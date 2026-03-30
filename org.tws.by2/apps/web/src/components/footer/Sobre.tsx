@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function Sobre() {
     return(
         <div className="min-h-screen flex flex-col bg-linear-to-r from-blue-50 to-white dark:from-blue-900 dark:to-gray-800 text-gray-800 dark:text-white px-6 py-12">
@@ -53,7 +55,7 @@ export function Sobre() {
                         </p>
                     </div>
                 </div>
-                <button className="hover:cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"><a href="/">Voltar Para Pagina Inicial</a></button>
+                    <Link className="hover:cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl" to="/">Voltar para a Pagina Inicial</Link>                
             </main>
         </div>
     )

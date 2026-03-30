@@ -1,14 +1,29 @@
-export function Portals() {
+import { Link } from "react-router-dom";
+
+import { useEffect, useRef } from "react";
+import { animateFeatures } from "../animations/Features";
+
+
+
+export function Features() {
+
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const cleanup = animateFeatures(ref);
+        return cleanup;
+    }, []);
+
     return( 
-        <section className="flex items-center justify-center ">
+        <section ref={ref} className="flex items-center justify-center ">
             <div className="flex flex-col gap-7 mb-24 px-4 items-center">
                 <div className="text-center">
-                    <h2 className="titlePortals text-3xl font-semibold text-lightGrayFHT">Nossas Iniciativas de Saúde</h2>
-                    <p className="text-lightGrayFHT subTitlePortals">Projetos de alto impacto para levar cuidado e tecnologia a quem mais precisa. Conheça e participe.</p>
+                    <h2 className="features-title text-3xl font-semibold text-lightGrayFHT">Nossas Iniciativas de Saúde</h2>
+                    <p className="features-subtitle text-lightGrayFHT ">Projetos de alto impacto para levar cuidado e tecnologia a quem mais precisa. Conheça e participe.</p>
                 </div>
                 <div className="grid grid-cols-1 px-0 lg:grid-cols-2 items-center gap-8 justify-center  ">
                     {/* Primeiro Card : Carreta da Saúde */}
-                    <div className="card5 gap-4 p-5 flex flex-col justify-center items-center text-center shadow-lg rounded bg-white">
+                    <div className="features-card1 gap-4 p-5 flex flex-col justify-center items-center text-center shadow-lg rounded bg-white">
                         <div className="flex gap-5 items-center">
                             <div className="h-15 w-15 bg-lightBlueFHT flex items-center justify-center rounded-full">
                                 <svg className="w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -22,11 +37,11 @@ export function Portals() {
                             Atendimentos presenciais e exames em diversas localidades.
                             Um projeto itinerante de cuidado e prevenção.
                         </p>
-                        <button className="bg-[#BABABA] text-white w-full rounded-2xl p-2 ">Em breve...</button>
+                        <button className="bg-[#BABABA] text-white w-full rounded-xl p-2 ">Em breve...</button>
                     </div>
 
                     {/* Segundo Card :  Portal Telemedicina */}
-                    <div className=" card6 gap-4 p-5 flex flex-col justify-center items-center text-center shadow-lg rounded bg-white">
+                    <div className=" features-card2 gap-4 p-5 flex flex-col justify-center items-center text-center shadow-lg rounded bg-white">
                         <div className="flex gap-5 items-center ">
                             <div className="h-15 w-15 bg-lightGreenFHT flex items-center justify-center rounded-full">
                                 <svg className="w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -40,9 +55,9 @@ export function Portals() {
                             Consultas online com especialistas,
                             trazendo conveniência e acesso à saúde de qualidade, onde quer que você esteja.
                         </p>
-                        <button className="bg-darkGreenFHT text-white w-full rounded-2xl p-2 flex items-center justify-center gap-4 hover:bg-greenFHT hover:cursor-pointer transition ">
+                        <Link to="/telemedicina" className="bg-[#05870C] text-white w-full rounded-xl p-2 flex items-center justify-center gap-4 hover:bg-[#0BB815] hover:cursor-pointer transition ">
                             Acender ao Portal <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-right h-4 w-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

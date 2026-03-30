@@ -1,61 +1,20 @@
-import { useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
+import { useEffect, useRef } from "react";
+import { animateAbout } from "../animations/About";
 
 export function About() {
+
+    const ref = useRef(null);
+
     useEffect(() => {
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".titleAbout",
-                start: "top 80%",
-                toggleActions: "play none none none"
-            }
-        });
-
-        tl.fromTo(".titleAbout",
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 1 }
-        )
-        .fromTo(".card1", 
-            { y: 20, opacity: 0 }, 
-            { y: 0, opacity: 1, duration: 0.5 }
-        )
-        .fromTo(".card2", 
-            { y: 20, opacity: 0 }, 
-            { y: 0, opacity: 1, duration: 0.5 }
-        )
-        .fromTo(".card3", 
-            { y: 20, opacity: 0 }, 
-            { y: 0, opacity: 1, duration: 0.5 }
-        )
-        .fromTo(".card4", 
-            { y: 20, opacity: 0 }, 
-            { y: 0, opacity: 1, duration: 0.5 }
-        )
-        .fromTo(".titlePortals",
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 1 }
-        ).fromTo(".subTitlePortals",
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 1 } 
-        ).fromTo(".card5", 
-            { y: 20, opacity: 0 }, 
-            { y: 0, opacity: 1, duration: 0.5 }
-        ).fromTo(".card6", 
-            { y: 20, opacity: 0 }, 
-            { y: 0, opacity: 1, duration: 0.5 }
-        )
-
+    const cleanup = animateAbout(ref);
+    return cleanup;
     }, []);
     
     return( 
-        <section className="flex items-center justify-center ">
+        <section ref={ref} className="flex items-center justify-center ">
             <div className="flex flex-col gap-7 pb-36 justify-center text-center items-center">
                 {/* Titulo */}
-                <h2 className="titleAbout text-3xl font-semibold text-lightGrayFHT">Como funciona a Plataforma da FHT</h2>
+                <h2 className="about-title text-3xl font-semibold text-lightGrayFHT">Como funciona a Plataforma da FHT</h2>
                 {/* Cards */}
                 <div className="grid grid-cols-1 w-full px-5 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     
