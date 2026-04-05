@@ -1,6 +1,6 @@
-import { AppRoutes } from "./routes/AppRoutes";
-import "./App.css";
+import { MainRoutes } from "./routes/Routes";
+import "./css/App.css";
 
 export default function App() {
-  return <AppRoutes />;
+  return <MainRoutes />;
 }

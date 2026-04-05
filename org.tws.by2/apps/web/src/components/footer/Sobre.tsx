@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import logo from "../../assets/svgs/logo-fht.svg"
+
 
 export function Sobre() {
     return(
         <div className="min-h-screen flex flex-col bg-linear-to-r from-blue-50 to-white dark:from-blue-900 dark:to-gray-800 text-gray-800 dark:text-white px-6 py-12">
-            <header className="mb-12 flex justify-center"><a href="/"><img src="/svgs/logo-fht.svg" className="w-50" alt="" /></a></header>
+            <header className="mb-12 flex justify-center"><a href="/"><img src={logo} className="w-50" alt="" /></a></header>
             <main className="max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl mb-5 font-bold">Sobre Nós</h1>
                 <p className="text-center mb-5 text-[20px] max-w-270">

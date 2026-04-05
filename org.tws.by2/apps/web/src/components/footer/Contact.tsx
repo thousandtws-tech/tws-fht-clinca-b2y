@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
 
+import logo from "../../assets/svgs/logo-fht.svg"
+
 export function Contact() {
     return(
         
@@ -7,7 +9,7 @@ export function Contact() {
             <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
                 <div className="sticky top-0 w-full z-9 flex items-center justify-between shadow p-6">
                     <a href="/">
-                        <img className="logo area w-30" src="/svgs/logo-fht.svg" alt="" />
+                        <img className="logo area w-30" src={logo} alt="" />
                     </a>
                     <ul className="flex items-center gap-5">
                         <li className="nav-item hover:cursor-pointer">Registre-se</li>

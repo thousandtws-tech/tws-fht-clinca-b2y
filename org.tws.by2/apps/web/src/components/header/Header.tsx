@@ -4,6 +4,8 @@ import { ButtonRegister } from "../buttons/Registrer"
 import { useEffect, useRef } from "react";
 import { animateHeader } from "./animation/Header";
 
+import logo from "../../assets/svgs/logo-fht.svg"
+
 
 export function Header() {
 
@@ -17,7 +19,7 @@ export function Header() {
     return(
         <header ref={ref}>
             <div className="sticky top-0 w-full z-9 bg-white flex items-center justify-between shadow p-6">
-                <a href="/"><img className="header-logo area w-30" src="/svgs/logo-fht.svg" alt="" /></a>
+                <a href="/"><img className="header-logo area w-30" src={logo} alt="" /></a>
 
                 <ul className="flex items-center text-[12px] gap-5">
                     <ButtonEnter to="/login">Entre</ButtonEnter>

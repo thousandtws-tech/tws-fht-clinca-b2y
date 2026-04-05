@@ -1,12 +1,10 @@
-
+import logo from "../../assets/svgs/logo-fht.svg"
 
 export function Terms() {
     return(
         <div className="min-h-screen flex flex-col bg-linear-to-r from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 text-gray-800 dark:text-white transition-colors duration-300">
            <header className="w-full p-6 flex items-center justify-center">
-                <a href="/">
-                    <img src="svgs/logo-fht.svg" alt="" />
-                </a>
+                <a href="/"><img src={logo} alt="" /></a>
            </header>
            <main className="flex flex-col items-center justify-center flex-1 px-6">
                 <div className="max-w-3xl text-center">
